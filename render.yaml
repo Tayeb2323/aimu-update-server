@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: aimu-update-server
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: GITHUB_OWNER
+        value: Tayeb2323
+      - key: GITHUB_REPO
+        value: AIMU
+      - key: GITHUB_TOKEN
+        sync: false  # Set this in Render dashboard (optional)
+    healthCheckPath: /health
