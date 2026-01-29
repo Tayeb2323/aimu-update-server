@@ -77,8 +77,14 @@ def get_latest_release():
     if not stable_releases:
         return None
 
-    # Sort by published date (newest first)
-    stable_releases.sort(key=lambda x: x.get('published_at', ''), reverse=True)
+    # Sort by semantic version (highest first), not by published date
+    def parse_version(release):
+        try:
+            return version.parse(release['tag_name'].lstrip('v'))
+        except Exception:
+            return version.parse('0.0.0')
+
+    stable_releases.sort(key=parse_version, reverse=True)
 
     return stable_releases[0]
 
